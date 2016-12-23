@@ -1,9 +1,12 @@
+if exists(select 1 from master.dbo.sysdatabases where name = 'schronisko') drop database schronisko
+GO
 CREATE DATABASE schronisko
+GO
 USE schronisko
 
 create table Rasa
 (
-	rasa_id int constraint rasa_id_nn not null,
+	rasa_id int identity(1,1) constraint rasa_id_nn not null,
 	nazwa varchar(25) constraint rasa_nazwa_nn not null
 )
 
@@ -11,7 +14,7 @@ alter table Rasa add constraint rasa_id_pk primary key (rasa_id)
 
 create table Klatka 
 (
-	klatka_id int constraint klatka_id_nn not null,
+	klatka_id int identity(1,1) constraint klatka_id_nn not null,
 	--w metrach kwadratowych--
 	wielkosc float constraint wielkosc_nn not null,
 	pojemnosc int constraint pojemnosc_nn not null
@@ -22,13 +25,13 @@ alter table Klatka add constraint klatka_id_pk primary key (klatka_id)
 
 create table Pies
 (
-	pies_id int constraint pies_id_nn not null,
+	pies_id int identity(1,1) constraint pies_id_nn not null,
 	rasa_id int constraint rasa_id_nn not null,
-	klatka_id int constraint klatka_id_nn not null,
+	klatka_id int,
 	nazwa varchar(25),
 	rok_urodzenia smallint,
-	data_przyjecia datetime constraint data_przyjecia_nn not null,
-	data_wydania datetime
+	data_przyjecia date constraint data_przyjecia_nn not null,
+	data_wydania date
 )
 
 
@@ -40,7 +43,7 @@ alter table Pies add constraint klatka_id_fk foreign key (klatka_id) references 
 
 CREATE TABLE Pracownik
 (
-	pracownik_id int constraint pracownik_id_nn NOT NULL,
+	pracownik_id int identity(1,1) constraint pracownik_id_nn NOT NULL,
 	imie varchar(25),
 	nazwisko varchar(25),
 )
@@ -49,7 +52,7 @@ ALTER TABLE Pracownik ADD CONSTRAINT pracownik_id_pk PRIMARY KEY (pracownik_id)
 
 CREATE TABLE Pensja_pracownika
 (
-	pensja_pracownika_id int constraint pracownik_id_nn NOT NULL,
+	pensja_pracownika_id int identity(1,1) constraint pracownik_id_nn NOT NULL,
 	pracownik_id int constraint pracownik_id_nn NOT NULL,
 	pensja smallmoney constraint pensja_nn NOT NULL,
 	data_od date constraint data_od_nn NOT NULL,
@@ -61,7 +64,7 @@ ALTER TABLE Pensja_pracownika ADD CONSTRAINT pracownik_id_fk2 FOREIGN KEY (praco
 
 CREATE TABLE Zamowienia_zywnosci
 (
-	zamowienia_zywnosci_id int constraint zamowienia_zywnosci_id_nn NOT NULL,
+	zamowienia_zywnosci_id int identity(1,1) constraint zamowienia_zywnosci_id_nn NOT NULL,
 	pracownik_id int constraint pracownik_id_nn NOT NULL,
 	cena float,
 	data datetime
@@ -72,7 +75,7 @@ ALTER TABLE Zamowienia_zywnosci ADD CONSTRAINT zamowienia_zywnosci_id_fk FOREIGN
 
 Create TABLE Klatka_pracownika
 (
-	klatka_pracownika_id int constraint klatka_pracownika_id_nn NOT NULL,
+	klatka_pracownika_id int identity(1,1) constraint klatka_pracownika_id_nn NOT NULL,
 	pracownik_id int constraint pracownik_id_nn NOT NULL,
 	klatka_id int constraint klatka_id_nn NOT NULL
 )
@@ -83,7 +86,7 @@ ALTER TABLE Klatka_pracownika ADD CONSTRAINT klatka_id_fk2 FOREIGN KEY (klatka_i
 
 Create TABLE Historia_zdrowia
 (
-	historia_zdrowia_id int constraint historia_zdrowia_id_nn NOT NULL,
+	historia_zdrowia_id int identity(1,1) constraint historia_zdrowia_id_nn NOT NULL,
 	pies_id int constraint pies_id_nn NOT NULL,
 	opis varchar(50) constraint opis_nn NOT NULL,
 	data date constraint data_nn NOT NULL
