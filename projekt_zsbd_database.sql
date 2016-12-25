@@ -16,7 +16,6 @@ create table Klatka
 (
 	klatka_id int identity(1,1) constraint klatka_id_nn not null,
 	--w metrach kwadratowych--
-	wielkosc float constraint wielkosc_nn not null,
 	pojemnosc int constraint pojemnosc_nn not null
 )
 
