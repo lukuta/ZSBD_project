@@ -37,3 +37,18 @@ group by k.klatka_id,k.pojemnosc
 
 select (sum(k.pojemnosc) - (select count(p.klatka_id) from pies as p)) as wolne_miejsca from klatka as k
 
+--Pracownicy ktorych pensja nie zmienila sie od poczatku
+
+
+select concat(p.imie,' ', p.nazwisko) as Nazwa from Pracownik as p
+where ((select count(pracownik_id) from Pensja_pracownika where pracownik_id=p.pracownik_id) = 1 )
+
+
+
+--suma rocznych wydatków na pensje pracowników
+
+select (sum(p.pensja)*12) from Pensja_pracownika  as p 
+where p.data_do is null
+
+
+

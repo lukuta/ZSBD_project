@@ -103,7 +103,6 @@ insert into schronisko.dbo.Klatka_pracownika values
 (4,6)
 
 --pies id opies data
---sprawdzic czy psy nie sa leczone po wydaniu xD
 
 
 insert into schronisko.dbo.Historia_zdrowia values
