@@ -1,9 +1,8 @@
-
-
-
 drop trigger trig3
 
 use schronisko;
+
+--1. zmiana klatki na null kiedy wprowadzimy date wydania psa 
 
 
 create trigger trig3
