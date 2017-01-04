@@ -12,18 +12,30 @@ create procedure proc1
 as
 begin
 	if @rasa_id is null or @data_przyjecia is null
-	begin
-		print 'Wyst¹pi³ b³¹d. Podano zbyt ma³o danych!'
-	end
+		begin
+			print 'Wyst¹pi³ b³¹d. Podano zbyt ma³o danych!'
+		end
 	else
-	begin
-		insert into schronisko..Pies values
-		(@rasa_id, @klatka_id, @nazwa, @rok_urodzenia, @data_przyjecia, @data_wydania)
-		print 'Pomyœlnie dodano psa do schroniska.'
-	end
+		begin
+			if @klatka_id in (select k.klatka_id 
+							  from schronisko..klatka as k
+							  group by k.klatka_id,k.pojemnosc
+							  having (k.pojemnosc - (select count(klatka_id) 
+													 from schronisko..pies 
+													 where k.klatka_id=klatka_id)) > 0)
+				begin
+					insert into schronisko..Pies values
+					(@rasa_id, @klatka_id, @nazwa, @rok_urodzenia, @data_przyjecia, @data_wydania)
+					print 'Pomyœlnie dodano psa do schroniska.'
+				end
+			else
+				begin
+					print 'W klatce nr: '+ CAST(@klatka_id AS varchar(5)) + ' nie ma ju¿ miejsca'
+				end
+		end
 end
 go
 
---DECLARE @tmp DATETIME
---SET @tmp = GETDATE()
---exec proc1 1,1,'Puszek',null,@tmp,null
+DECLARE @tmp DATETIME
+SET @tmp = GETDATE()
+exec proc1 1,1,'Puszek',null,@tmp,null

@@ -87,3 +87,33 @@ join
 									 group by YEAR(p.data_przyjecia)
 									 order by COUNT(YEAR(p.data_przyjecia)) desc)
 ) as j on j.pies_id = p.pies_id
+
+--11. Ilosc przyjetych psow w poszczegolnych latach
+select YEAR(p.data_przyjecia) as rok, COUNT(*) as ilosc
+from Pies as p
+group by YEAR(p.data_przyjecia)
+
+--12. Ilosc wydanych psow w poszczegolnych latach
+select YEAR(p.data_wydania) as rok, COUNT(*) as ilosc 
+from Pies as p
+where p.data_wydania is not null
+group by YEAR(p.data_wydania)
+
+--13. Rasa psa, któr¹ ka¿dy z pracowników ma najwiecej pod opiek¹
+select pr.pracownik_id, max(klatki.nazwa) as nazwa
+from Pracownik as pr
+join
+(
+	select kp.pracownik_id, kp.klatka_id, psy.nazwa
+	from Klatka_pracownika as kp
+	join
+	(
+		select p.rasa_id, p.klatka_id, r.nazwa
+		from Pies as p, Rasa as r
+		where r.rasa_id = p.rasa_id
+	) as psy on psy.klatka_id = kp.klatka_id
+) 
+as klatki on klatki.pracownik_id = pr.pracownik_id
+group by pr.pracownik_id
+
+--14. 
