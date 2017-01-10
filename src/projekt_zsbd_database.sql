@@ -93,3 +93,11 @@ Create TABLE Historia_zdrowia
 
 ALTER TABLE Historia_zdrowia ADD CONSTRAINT historia_zdrowia_id_pk PRIMARY KEY (historia_zdrowia_id)
 ALTER TABLE Historia_zdrowia ADD CONSTRAINT pies_id_fk FOREIGN KEY (pies_id) REFERENCES Pies(pies_id)
+
+Create TABLE Pensja_minimalna
+(
+	pensja_minimalna_id int constraint pensja_minimalna_id_nn NOT NULL,
+	wartosc smallmoney constraint wartosc_nn NOT NULL
+)
+
+ALTER TABLE Pensja_minimalna ADD CONSTRAINT pensja_minimalna_id_pk PRIMARY KEY (pensja_minimalna_id)

@@ -10,6 +10,7 @@ select * from schronisko.dbo.Pensja_pracownika
 select * from schronisko.dbo.Zamowienia_zywnosci
 select * from schronisko.dbo.Klatka_pracownika
 select * from schronisko.dbo.Historia_zdrowia
+select * from schronisko.dbo.Pensja_minimalna
 
 
 
@@ -37,7 +38,6 @@ where p.data_wydania is null
 select k.klatka_id,(k.pojemnosc - (select count(klatka_id) from pies where k.klatka_id=klatka_id)) as wolne_miejsca from klatka as k
 group by k.klatka_id,k.pojemnosc
 
-
 --5. Ilosc wolnych miejsc ogó³em
 
 select (sum(k.pojemnosc) - (select count(p.klatka_id) from pies as p)) as wolne_miejsca from klatka as k
@@ -52,7 +52,7 @@ where ((select count(pracownik_id) from Pensja_pracownika where pracownik_id=p.p
 
 --7. suma rocznych wydatków na pensje pracowników
 
-select (sum(p.pensja)*12) from Pensja_pracownika  as p 
+select (sum(p.pensja)*12) as roczne_wydatki from Pensja_pracownika  as p 
 where p.data_do is null
 
 --8. Dane pracownikow zajmuj¹cych siê wiêcej ni¿ 2 klatkami
@@ -116,4 +116,19 @@ join
 as klatki on klatki.pracownik_id = pr.pracownik_id
 group by pr.pracownik_id
 
---14. 
+--14. Suma zarobkow kazdego z pracownikow
+Select pp.pracownik_id, p.imie, p.nazwisko, SUM(DATEDIFF(month,pp.data_od, CAST(
+															CASE 
+																 WHEN pp.data_do is null
+																	THEN GETDATE() 
+																 ELSE pp.data_do 
+															END AS date)) * pp.pensja) as zarobki_ogó³em
+from Pensja_pracownika as pp, Pracownik as p
+where p.pracownik_id = pp.pracownik_id
+group by pp.pracownik_id, p.imie, p.nazwisko
+
+
+--15 Psy z imiemiem zawieraj¹cym 'a'
+Select *
+From Pies
+where nazwa like '%a%'

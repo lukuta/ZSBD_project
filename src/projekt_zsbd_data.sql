@@ -117,6 +117,9 @@ insert into schronisko.dbo.Historia_zdrowia values
 (8,'Szczepienie','2011-05-12'),
 (9,'Gor¹czka','2015-04-12')
 
+insert into schronisko.dbo.Pensja_minimalna values
+(1, 1200.00)
+
 
 
 
